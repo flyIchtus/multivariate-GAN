@@ -16,4 +16,7 @@ torch v>=1.7, numpy, horovod (for gan_horovod only, see https://horovod.readthed
 # how to use :
 
 *gan_std* : python3 main.py --data_dir 'my_data_dir' --output_dir 'my_output_dir'
+
 *gan_horovod* , with e.g 4 GPUs : horovodrun -np 4 -H localhost:4 main.py -data_dir 'my_data_dir' --output_dir 'my_output_dir'. Note that the batch size used here is a *per-GPU* batch size.
+
+A priori, folders creation is done manually.
