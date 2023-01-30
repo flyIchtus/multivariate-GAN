@@ -20,26 +20,6 @@ import argparse
 from itertools import product
 import subprocess
 
-"""ensemble={'--lr_D': [1e-3],'--lr_G' : [1e-3],'--batch_size':[4,8,16,32,64],\
-          '--n_dis':[1], '--sn_on_g': [True], '--use_amp':[True],\
-          '--lrD_sched':['exp'], '--lrG_sched':['exp'], '--lrD_gamma':[0.95,0.9],\
-          '--lrG_gamma':[0.95,0.9], '--ortho_init': [True]}"""
-
-ensemble={'--batch_size':[8,16,32,64], 
-          '--lr_D': [1e-4],'--lr_G' : [1e-4],
-          '--n_dis':[1], '--sn_on_g': [True], '--use_amp':[True],'--warmup':[True],
-          '--lrD_sched':['exp'], '--lrG_sched':['exp'], '--lrD_gamma':[0.99],
-          '--lrG_gamma':[0.99], 
-          '--ortho_init': [True],
-          '--g_channels':[3], '--d_channels':[3],
-          '--var_names' : ["['u','v','t2m']"], '--total_steps' :[10000],
-          '--sample_num':[32],
-          '--conditional':[True],
-          '--model' :['resnet_concat_bilin'],
-          '--condition_vars': ["['orog']"]}
-
-
-script_dir=os.getcwd()+'/slurms/'
 
 
 def str2bool(v):
@@ -92,9 +72,9 @@ def get_dirs():
     
     # Path
     parser.add_argument('--data_dir', type=str, \
-                        default='/scratch/mrmn/brochetc/GAN_2D/Sud_Est_Baselines_IS_1_1.0_0_0_0_0_0_256_done/')
+                        default='')
     parser.add_argument('--output_dir', type=str, \
-                        default='/scratch/mrmn/brochetc/GAN_2D/')
+                        default='')
     
     parser.add_argument('--SET_NUM', type=int, default=1)
     
@@ -107,11 +87,9 @@ def get_expe_parameters():
 
     # Model architecture hyper-parameters
     parser.add_argument('--model', type=str, default='resnet', \
-                        choices=['resnet','resnet_aa' ,'resnet_concat', 'resnet_concat_aa', 'resnet_concat_smooth', 
-                                 'resnet_concat_bilin', 'resnet_concat_light', 'cBN_proj','cBN_proj_simple',
-                                 'resnet_concat_bilin_emb', 'resnet_concat_rough_emb'])
+                        choices=['resnet'])
     parser.add_argument('--train_type', type=str, default='wgan-hinge',\
-                        choices=['vanilla','wgan-gp', 'wgan-hinge'])
+                        choices=['wgan-hinge'])
     parser.add_argument('--version', type=str, default='resnet_128')
     parser.add_argument('--conditional', type=str2bool, default = False)
     parser.add_argument('--condition_vars', type=str2list, default = [])
@@ -154,13 +132,6 @@ def get_expe_parameters():
     
     parser.add_argument('--warmup', type=str2bool, default=False)
     
-    parser.add_argument('--LA_optimizer', type=str2bool, default=False,\
-                        help="use the Look-Ahead Optimizer wrapping")
-    parser.add_argument('--LA_k', type=int, default=100,\
-                       help="look_ahead step interval")
-    parser.add_argument('--LA_alpha', type=float, default=0.3,\
-                        help="look_ahead step ratio")
-    
     # Data description
     parser.add_argument('--var_names', type=str2list, default=['u','v','t2m'])#, 'orog'])
     parser.add_argument('--crop_indexes', type=str2list, default=[78,206,55,183])
@@ -196,7 +167,7 @@ def get_expe_parameters():
 
     # Paths
     parser.add_argument('--data_dir', type=str, \
-                        default='/scratch/mrmn/brochetc/GAN_2D/Sud_Est_Baselines_IS_1_1.0_0_0_0_0_0_256_done/')
+                        default='')
     parser.add_argument('--output_dir', type=str, \
                         default=os.getcwd()+'/')
 
@@ -370,17 +341,3 @@ if __name__=="__main__":
         os.mkdir(where)
     os.chdir(where)
         
-    ensemble['--data_dir']=[dirs.data_dir]
-    ensemble['--output_dir']=[dirs.output_dir]
-    expe_list=make_dicts(ensemble)
-    
-    config_list=prepare_expe_set(where,expe_list)
-    
-    for params in expe_list:
-        print('--------------------------------------------------------------')
-        print('--------------------------------------------------------------')
-        print('Running experiment')
-        print('--------------------------------------------------------------')
-        print('--------------------------------------------------------------')
-        args=nameSpace2SlurmArg(argparse.Namespace(**params))
-        subprocess.run(['sbatch',script_dir+'run_GAN.slurm',args])

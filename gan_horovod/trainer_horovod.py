@@ -21,7 +21,6 @@ import horovod.torch as hvd
 import metrics4arome as METR
 import plotting_functions as plotFunc
 import DataSet_Handler_horovod as DSH
-import LookAheadMiniMax as LA
 
 import GAN_logic_horovod as GAN
 
@@ -156,12 +155,6 @@ class Trainer():
                                             self.optim_G, self.config.lrD_gamma)
             self.scheduler_D=AllocScheduler(self.config.lrG_sched,\
                                             self.optim_D, self.config.lrG_gamma)
-        
-        if self.LA_optimizer :
-                _alpha=self.config.LA_alpha
-                _k=self.config.LA_k
-                self.optim_G=LA.LookAheadOpt(self.optim_G, alpha=_alpha,k=_k)
-                self.optim_D=LA.LookAheadOpt(self.optim_D, alpha=_alpha,k=_k)
         
         ###### horovodizing stuff
         

@@ -5,13 +5,8 @@ Created on Wed Feb  2 17:29:56 2022
 
 @author: brochetc
 
-resnets version 2
+resnets
 
-Include :
-    
-    -> leaky relu functions for G and D done
-    -> no bias in dense for G : done
-    -> nearest neighbour interpolation instead of bilinear
 """
 
 
