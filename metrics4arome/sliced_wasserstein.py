@@ -22,6 +22,7 @@ import numpy as np
 import scipy.ndimage
 from torch import tensor
 from math import log2
+import copy
 
 def get_descriptors_for_minibatch(minibatch, nhood_size, nhoods_per_image):
     S = minibatch.shape # (minibatch, channel, height, width)
@@ -164,6 +165,9 @@ class SWD_API:
         return dist + [np.mean(dist)]
     
     def End2End(self, real, fakes):
+        
+        real = copy.deepcopy(real)
+        fakes = copy.deepcopy(fakes)
         
         self.begin('fakes')
         
