@@ -191,58 +191,19 @@ def define_levels(bivariates, nlevels):
     return levels
 
 
+
 def space2batch(data):
-    """
-    A reshape operation.  Shape spatial dimension into batch samples.
-    
-    
-    """
+
     Shape=data.shape
     assert len(Shape)==4
-    a=data.reshape(Shape[0]*Shape[2]*Shape[3],Shape[1])
+    
+    data_list = []
+    for i in range(Shape[1]):
+        data_list.append(np.expand_dims(data[:,i,:,:].reshape(Shape[0] * Shape[2] * Shape[3]), axis= 1))
+    
+    a = np.concatenate(data_list, axis = 1)
     return a
 
-"""def simple_stupid_load(data_name):
-    if data_name[0]=='r':
-        return data_rlist[data_name[1]]
-    elif data_name[0]=='f':
-        return data_flist[data_name[1]]
-    else: print('error')"""
-
-def total_run(data_f, data_r, batching=False, levels=None):
-
-    if type(data_f)==list :
-        channels=data_f[0].shape[1]
-    else :
-        channels=data_f.shape[1]
-    ncouples2=channels*(channels-1)
-    bins=np.linspace(tuple([-1 for i in range(ncouples2)]), tuple([1 for i in range(ncouples2)]),101, axis=1)
-    
-
-    if not batching:
-        bivariates_f, bins_f=var2Var_hist(data_f,bins)
-        bivariates_r, bins_r=var2Var_hist(data_r,bins)
-    
-    else :
-        bivariates_f, bins_f=batchingvar2Var([('f',i) for i in range(100)], bins, simple_stupid_load)
-        bivariates_r, bins_r=batchingvar2Var([('r',i) for i in range(100)],bins, simple_stupid_load)
-    
-
-    if levels is None :
-        levels=define_levels(bivariates_r,10)
-    
-    #print(levels)
-
-    
-
-    var2var_f=(np.log(bivariates_f), bins)
-    var2var_r=(np.log(bivariates_r), bins)
-
-    
-
-    plot2D_histo(var2var_f, var2var_r, levels)
-
-    return var2var_f, var2var_r, levels
 
 def multi_variate_correlations(data_real, data_fake):
     """
