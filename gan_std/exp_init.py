@@ -96,7 +96,7 @@ def get_parameters():
 
     # Path
     parser.add_argument('--data_dir', type=str, \
-                        default='/scratch/mrmn/brochetc/GAN_2D_11/Sud_Est_Baselines_IS_1_1.0_0_0_0_0_0_256_done/')
+                        default='./')
     parser.add_argument('--output_dir', type=str, \
                         default='/scratch/mrmn/brochetc/GAN_2D_11')
 
