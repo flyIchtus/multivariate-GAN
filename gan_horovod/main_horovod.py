@@ -6,9 +6,6 @@ Created on Wed Jan 19 09:33:21 2022
 @author: brochetc
 """
 
-import sys
-sys.path.append('/home/mrmn/brochetc/gan4arome_reorg_var/')
-
 import torch
 
 import horovod.torch as hvd
