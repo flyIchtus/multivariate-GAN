@@ -22,7 +22,7 @@ import pickle
 
 parser=argparse.ArgumentParser()
 parser.add_argument('--expe_dir', type=str, \
-                    default='/scratch/mrmn/brochetc/GAN_2D/Set_36/resnet_aa_128_wgan-hinge_64_64_1_0.001_0.001/Instance_3/')
+                    default='./')
 args=parser.parse_args()
 
 model_dir=args.expe_dir+'models/'
