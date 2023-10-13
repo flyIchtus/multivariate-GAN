@@ -25,10 +25,10 @@ from cartopy.mpl.geoaxes import GeoAxes
 from glob import glob
 
 
-data_dir_fake='/home/brochetc/Bureau/Thèse/présentations_thèse/images_des_entrainements/echantillons/Norm/'
-data_dir='/home/brochetc/Bureau/Thèse/présentations_thèse/images_des_entrainements/echantillons/'
-data_dir_vent='/home/brochetc/Bureau/Thèse/présentations_thèse/images_des_entrainements/echantillons_vent/'
-path_plot='/home/brochetc/Bureau/Thèse/présentations_thèse/images_des_entrainements/'
+data_dir_fake='./'
+data_dir='./'
+data_dir_vent='./'
+path_plot='./'
 CI=(78,207,55,184)
 
 Maxs=np.load(data_dir+'max_with_orog.npy')[1:4].reshape(3,1,1)
@@ -402,56 +402,3 @@ class canvasHolder():
         fig.tight_layout()
         plt.savefig(plot_dir+pic_name)
         plt.close()
-
-
-        
-
-"""
-#Fonction ajouté pour l'exemple ici
-def plot_RR_AE(RR_original,RR_AE,Date,Reseau,ech,MB,Zone,dim):
-        lonlat=extract_lonlat()
-        nb_lon=128
-        nb_lat=128
-        proj=ccrs.Stereographic(central_latitude=46.7,central_longitude=2)
-        proj_plot=ccrs.PlateCarree()
-        X_min,Y_min=zonage_bord(Zone)
-        axes_class= (GeoAxes,dict(map_projection=proj))
-        fig=plt.figure(figsize=(10,4))
-        grid= AxesGrid(fig, 111, axes_class=axes_class,nrows_ncols=(1,2),
-                               axes_pad=0.3,cbar_location= 'right', cbar_mode= 'single',
-                               cbar_pad=0.2,label_mode='')
-
-        
-        ax_RR=proj_multi(grid[0],X_min,Y_min,nb_lat,nb_lon)
-        ax_AE=proj_multi(grid[1],X_min,Y_min,nb_lat,nb_lon)
-
-        bounds = np.array([0, 0.1, 0.4,0.6,1.2,2.1,3.6,6.5,12,21,36,65,120,205,360])
-        legende= ["0","0.1","0.4","0.6","1.2","2.1","3.6","6.5","12","21","36","65","120","205","360"]
-        norm = colors.BoundaryNorm(boundaries=bounds, ncolors=14)
-        cmap2 = colors.ListedColormap(["white","mediumpurple","blue","dodgerblue","darkseagreen","seagreen","greenyellow","yellow",
-                                                     "navajowhite","sandybrown","darkorange","red","darkred","black"], name='from_list', N=None)    
-
-        ax_RR.pcolormesh(lonlat[0][Y_min:(Y_min+nb_lat),X_min:(X_min+nb_lon)],lonlat[1][Y_min:(Y_min+nb_lat),X_min:(X_min+nb_lon)],RR_original,cmap=cmap2,norm=norm,alpha=1,transform=proj_plot)
-        im=ax_AE.pcolormesh(lonlat[0][Y_min:(Y_min+nb_lat),X_min:(X_min+nb_lon)],lonlat[1][Y_min:(Y_min+nb_lat),X_min:(X_min+nb_lon)],RR_AE,cmap=cmap2,norm=norm,alpha=1,transform=proj_plot)
-        cbar=grid.cbar_axes[0].colorbar(im)
-        cbar.ax.set_yticks(np.linspace(0, 361, 15))
-        cbar.ax.set_yticklabels(legende, va='center',fontsize=8)
-
-        date_format=day_and_hour_UTC(Date,Reseau,ech)
-        fig.suptitle("Plot RR1h et AE (dim "+str(dim)+"), Date: "+str(Date)+", Run: "+str(Reseau)+"h, MB : "+MB+" \n Zone : "+Zone+", Validite : "+date_format+" UTC",fontsize=10)
-        path_plot='/home/mouniera/Documents/Scenario_Megabase/Plot_AE/Plot_test/'+Date+Reseau+'/dim'+str(dim)+'/Zone_'+Zone+'/'+MB+'/'
-        test_and_create_path(path_plot)
-        plt.savefig(path_plot+'Test_'+date_format.replace(" ","_").replace("/","-")+'_dim'+str(dim)+'.png')
-        plt.close()
-        
-    #bounds = np.linspace(-1.,1.,15)
-    #norm = colors.BoundaryNorm(boundaries=bounds, ncolors=14)
-    #cmap2 = colors.ListedColormap(["white","mediumpurple","blue","dodgerblue","darkseagreen","seagreen","greenyellow","yellow",
-    #                                             "navajowhite","sandybrown","darkorange","red","darkred","black"], name='from_list', N=None) 
-    
-    
-    
-    
-    #axes['wind']=proj_multi(grid[0], X_min,Y_min,nb_lat,nb_lon)
-    #ims['wind']=axes['wind'].quiver(x=Coords[0][::4],y=Coords[1][::4],u=data[0,::4,::4],v=data[1,::4,::4],scale=4)        
-"""
